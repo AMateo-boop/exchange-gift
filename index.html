@@ -1,144 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Christmas Exchange Gift 2025 🎁</title>
-<style>
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: #fff7f0;
-    color: #333;
-    text-align: center;
-    padding: 30px;
-  }
-  h1 {
-    color: #c62828;
-  }
-  .form, .list, .randomizer {
-    margin: 20px auto;
-    max-width: 500px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-  input, textarea, button {
-    width: 90%;
-    margin: 8px 0;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-  }
-  button {
-    background: #c62828;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #b71c1c;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    margin: 8px 0;
-    padding: 8px;
-    background: #f9f9f9;
-    border-radius: 5px;
-  }
-</style>
-</head>
-<body>
-
-<h1>🎅 Christmas Exchange Gift 2025 🎄</h1>
-
-<div class="form">
-  <h2>Add Your Wishlist</h2>
-  <input type="text" id="name" placeholder="Your Name">
-  <input type="text" id="codename" placeholder="Your Codename">
-  <textarea id="wishlist" rows="3" placeholder="Your Wishlist"></textarea>
-  <button onclick="addEntry()">Add to List</button>
-</div>
-
-<div class="list">
-  <h2>Participants</h2>
-  <ul id="participantList"></ul>
-  <button onclick="confirmList()">Confirm List</button>
-</div>
-
-<div class="randomizer" style="display:none;">
-  <h2>🎁 Secret Monito/Monita Randomizer</h2>
-  <button onclick="randomize()">Generate Pairings</button>
-  <ul id="pairList"></ul>
-</div>
-
 <script>
-let participants = [];
+document.addEventListener('DOMContentLoaded', () => {
+  let participants = [];
 
-function addEntry() {
-  const name = document.getElementById('name').value.trim();
-  const codename = document.getElementById('codename').value.trim();
-  const wishlist = document.getElementById('wishlist').value.trim();
+  const addButton = document.getElementById("addButton");
+  const confirmButton = document.getElementById("confirmButton");
+  const randomButton = document.getElementById("randomButton");
 
-  if (!name || !codename || !wishlist) {
-    alert('Please fill in all fields.');
-    return;
-  }
+  addButton.addEventListener("click", addEntry);
+  confirmButton.addEventListener("click", confirmList);
+  randomButton.addEventListener("click", randomize);
 
-  participants.push({ name, codename, wishlist });
-  document.getElementById('name').value = '';
-  document.getElementById('codename').value = '';
-  document.getElementById('wishlist').value = '';
-  updateList();
-}
+  function addEntry() {
+    const name = document.getElementById('name').value.trim();
+    const codename = document.getElementById('codename').value.trim();
+    const wishlist = document.getElementById('wishlist').value.trim();
 
-function updateList() {
-  const list = document.getElementById('participantList');
-  list.innerHTML = '';
-  participants.forEach(p => {
-    const li = document.createElement('li');
-    li.textContent = ${p.name} (${p.codename}) - Wishlist: ${p.wishlist};
-    list.appendChild(li);
-  });
-}
-
-function confirmList() {
-  if (participants.length < 2) {
-    alert('Add at least 2 participants.');
-    return;
-  }
-  document.querySelector('.randomizer').style.display = 'block';
-  alert('List confirmed! You can now randomize your Secret Monito/Monita.');
-}
-
-function randomize() {
-  let receivers = [...participants];
-  let results = [];
-
-  for (let giver of participants) {
-    let possible = receivers.filter(r => r.name !== giver.name);
-    if (possible.length === 0) {
-      alert('Re-randomizing to avoid self-pairing.');
-      return randomize();
+    if (!name || !codename || !wishlist) {
+      alert('Please fill in all fields.');
+      return;
     }
-    let receiver = possible[Math.floor(Math.random() * possible.length)];
-    results.push(${giver.codename} ➜ ${receiver.codename});
-    receivers = receivers.filter(r => r !== receiver);
+
+    participants.push({ name, codename, wishlist });
+    document.getElementById('name').value = '';
+    document.getElementById('codename').value = '';
+    document.getElementById('wishlist').value = '';
+    updateList();
   }
 
-  const list = document.getElementById('pairList');
-  list.innerHTML = '';
-  results.forEach(p => {
-    const li = document.createElement('li');
-    li.textContent = p;
-    list.appendChild(li);
-  });
-}
-</script>
+  function updateList() {
+    const list = document.getElementById('participantList');
+    list.innerHTML = '';
+    participants.forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = ${p.name} (${p.codename}) - Wishlist: ${p.wishlist};
+      list.appendChild(li);
+    });
+  }
 
-</body>
-</html>
+  function confirmList() {
+    if (participants.length < 2) {
+      alert('Add at least 2 participants first.');
+      return;
+    }
+    document.getElementById('randomizer').style.display = 'block';
+    alert('List confirmed! You can now randomize your Secret Monito/Monita.');
+  }
+
+  function randomize() {
+    let receivers = [...participants];
+    let results = [];
+
+    for (let giver of participants) {
+      let possible = receivers.filter(r => r.name !== giver.name);
+      if (possible.length === 0) {
+        alert('Re-randomizing to avoid self-pairing.');
+        return randomize();
+      }
+      let receiver = possible[Math.floor(Math.random() * possible.length)];
+      results.push(${giver.codename} ➜ ${receiver.codename});
+      receivers = receivers.filter(r => r !== receiver);
+    }
+
+    const list = document.getElementById('pairList');
+    list.innerHTML = '';
+    results.forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = p;
+      list.appendChild(li);
+    });
+  }
+});
+</script>
